@@ -41,3 +41,17 @@ function Get-ResourceNames {
 
     return $resourceNames
 }
+
+function Get-EnvVarFromFile {
+    param (
+        [Parameter(Mandatory=$true)]
+        [string]$envFilePath,
+        [Parameter(Mandatory=$true)]
+        [string]$variableName
+    )
+
+    $variableMatch = $(Get-Content $envFilePath | Select-String -Pattern "$variableName=(.+)")
+    $value = $variableMatch.Matches[0].Groups[1].Value
+
+    return $value
+}
