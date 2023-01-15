@@ -36,7 +36,8 @@ function Get-ResourceNames {
         cosmosDatabase = "${resourceGroupName}-${uniqueRgString}-cosmos"
         keyVault = "${resourceGroupName}-${uniqueRgString}-keyvault"
         logAnalytics = "${resourceGroupName}-loganalytics"
-        sqlDatabas = "${resourceGroupName}-${uniqueRgString}-sql"
+        sqlDatabase = "${resourceGroupName}-${uniqueRgString}-sql-db"
+        sqlServer = "${resourceGroupName}-${uniqueRgString}-sql-server"
     }
 
     return $resourceNames

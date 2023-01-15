@@ -33,7 +33,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
   }
 }
 
-module database 'modules/cosmosDatabase.bicep' = {
+module cosmosDatabase 'modules/cosmosDatabase.bicep' = {
   name: 'databaseModule'
   params: {
     uniqueRgString: uniqueRgString
@@ -56,5 +56,12 @@ module containerAppsEnv 'modules/containerAppsEnvironment.bicep' = {
   name: 'containerAppsEnv'
   params: {
     logAnalyticsWorkspaceId: logAnalytics.outputs.logAnalyticsId
+  }
+}
+
+module sqlDatabase 'modules/sqlDatabase.bicep' = {
+  name: 'sqlDatabaseModule'
+  params: {
+    uniqueRgString: uniqueRgString
   }
 }
