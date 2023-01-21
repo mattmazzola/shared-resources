@@ -1,6 +1,6 @@
 function Write-Step {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$text
     )
     
@@ -11,9 +11,9 @@ function Write-Step {
 
 function Write-Hash {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$text,
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [Object]$hash
     )
     
@@ -24,20 +24,20 @@ function Write-Hash {
 
 function Get-ResourceNames {
     param (
-        [Parameter(Mandatory=$true, Position=0)]
+        [Parameter(Mandatory = $true, Position = 0)]
         [string]$resourceGroupName,
-        [Parameter(Mandatory=$true, Position=1)]
+        [Parameter(Mandatory = $true, Position = 1)]
         [string]$uniqueRgString
     )
 
     $resourceNames = [ordered]@{
-        containerAppsEnv = "${resourceGroupName}-containerappsenv"
+        containerAppsEnv  = "${resourceGroupName}-containerappsenv"
         containerRegistry = "${resourceGroupName}${uniqueRgString}acr"
-        cosmosDatabase = "${resourceGroupName}-${uniqueRgString}-cosmos"
-        keyVault = "${resourceGroupName}-${uniqueRgString}-keyvault"
-        logAnalytics = "${resourceGroupName}-loganalytics"
-        sqlDatabase = "${resourceGroupName}-${uniqueRgString}-sql-db"
-        sqlServer = "${resourceGroupName}-${uniqueRgString}-sql-server"
+        cosmosDatabase    = "${resourceGroupName}-${uniqueRgString}-cosmos"
+        keyVault          = "${resourceGroupName}-${uniqueRgString}-keyvault"
+        logAnalytics      = "${resourceGroupName}-loganalytics"
+        sqlDatabase       = "${resourceGroupName}-${uniqueRgString}-sql-db"
+        sqlServer         = "${resourceGroupName}-${uniqueRgString}-sql-server"
     }
 
     return $resourceNames
@@ -45,9 +45,9 @@ function Get-ResourceNames {
 
 function Get-EnvVarFromFile {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$envFilePath,
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$variableName
     )
 
@@ -55,4 +55,26 @@ function Get-EnvVarFromFile {
     $value = $variableMatch.Matches[0].Groups[1].Value
 
     return $value
+}
+
+function Get-SharedResourceDeploymentVars {
+    param (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [string]$resourceGroupName,
+        [Parameter(Mandatory = $true, Position = 1)]
+        [string]$uniqueRgString
+    )
+
+    $sharedResourceNames = Get-ResourceNames $resourceGroupName $uniqueRgString
+
+    $acrJson = $(az acr credential show -n $sharedResourceNames.containerRegistry --query "{ username:username, password:passwords[0].value }" | ConvertFrom-Json)
+    
+    $output = [ordered]@{
+        containerAppsEnvResourceId = $(az containerapp env show -g $resourceGroupName -n $sharedResourceNames.containerAppsEnv --query "id" -o tsv)
+        registryUrl                = $(az acr show -g $resourceGroupName -n $sharedResourceNames.containerRegistry --query "loginServer" -o tsv)
+        registryUsername           = $acrJson.username
+        registryPassword           = $acrJson.password
+    }
+
+    return $output
 }
