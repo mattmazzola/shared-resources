@@ -38,6 +38,8 @@ function Get-ResourceNames {
         logAnalytics      = "${resourceGroupName}-loganalytics"
         sqlDatabase       = "${resourceGroupName}-${uniqueRgString}-sql-db"
         sqlServer         = "${resourceGroupName}-${uniqueRgString}-sql-server"
+        serviceBus        = "${resourceGroupName}-${uniqueRgString}-servicebus"
+        storage           = "${resourceGroupName}${uniqueRgString}storage"
     }
 
     return $resourceNames

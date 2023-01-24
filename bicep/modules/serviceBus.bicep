@@ -1,7 +1,7 @@
 param uniqueRgString string
 // global	6-50	Alphanumerics.
 // https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-name-rules#microsoftservicebus
-@minLength(5)
+@minLength(6)
 @maxLength(50)
 param name string = '${resourceGroup().name}-${uniqueRgString}-servicebus'
 param location string = resourceGroup().location

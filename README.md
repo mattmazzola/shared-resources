@@ -33,10 +33,11 @@ $resourceNames = Get-ResourceNames $resourceGroupName $uniqueRgString
 
 $sqlServerResourceId = $(az sql server show -g $resourceGroupName -n $resourceNames.sqlServer --query "id" -o tsv)
 $sqlDatabaseResourceId = $(az sql db show -g $resourceGroupName --server $resourceNames.sqlServer -n $resourceNames.sqlDatabase --query "id" -o tsv)
-$serviceBusResourceId = $(az servicebus namespace show -g $resourceGroupName -n shared-klgoyi-servicebus --query "id" -o tsv)
+$serviceBusResourceId = $(az servicebus namespace show -g $resourceGroupName -n $resourceNames.servicebus --query "id" -o tsv)
+$storageResourceId = $(az storage account show -g $resourceGroupName -n $resourceNames.storage --query "id" -o tsv)
 
-az group export -g $resourceGroupName --resource-ids $serviceBusResourceId > arm-sb.json
-az bicep decompile -f arm-sb.json
+az group export -g $resourceGroupName --resource-ids $storageResourceId > arm-store.json
+az bicep decompile -f arm-store.json
 ```
 
 1. Get list of available SQL SKUs for a Region
