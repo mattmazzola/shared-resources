@@ -1,5 +1,3 @@
-
-
 $resourceGroupName = "shared"
 $resourceGroupLocation = "westus3"
 

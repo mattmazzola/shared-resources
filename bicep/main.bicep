@@ -65,3 +65,10 @@ module sqlDatabase 'modules/sqlDatabase.bicep' = {
     uniqueRgString: uniqueRgString
   }
 }
+
+module serviceBus 'modules/serviceBus.bicep' = {
+  name: 'serviceBusModule'
+  params: {
+    uniqueRgString: uniqueRgString
+  }
+}

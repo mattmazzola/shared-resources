@@ -23,11 +23,20 @@ az keyvault purge --subscription $subscriptionId -n $resourceNames.keyVault
 1. Export template of specific resource
 
 ```powershell
+$resourceGroupName = "shared"
+$resourceGroupLocation = "westus3"
+$uniqueRgString = "klgoyi"
+
+Import-Module "./pipelines/scripts/common.psm1" -Force
+
+$resourceNames = Get-ResourceNames $resourceGroupName $uniqueRgString
+
 $sqlServerResourceId = $(az sql server show -g $resourceGroupName -n $resourceNames.sqlServer --query "id" -o tsv)
 $sqlDatabaseResourceId = $(az sql db show -g $resourceGroupName --server $resourceNames.sqlServer -n $resourceNames.sqlDatabase --query "id" -o tsv)
+$serviceBusResourceId = $(az servicebus namespace show -g $resourceGroupName -n shared-klgoyi-servicebus --query "id" -o tsv)
 
-az group export -g $resourceGroupName --resource-ids $sqlServerResourceId $sqlDatabaseResourceId > arm-db.json
-az bicep decompile -f arm-db.json
+az group export -g $resourceGroupName --resource-ids $serviceBusResourceId > arm-sb.json
+az bicep decompile -f arm-sb.json
 ```
 
 1. Get list of available SQL SKUs for a Region
