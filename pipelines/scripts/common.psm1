@@ -39,7 +39,8 @@ function Get-ResourceNames {
         sqlDatabase       = "${resourceGroupName}-${uniqueRgString}-sql-db"
         sqlServer         = "${resourceGroupName}-${uniqueRgString}-sql-server"
         serviceBus        = "${resourceGroupName}-${uniqueRgString}-servicebus"
-        storage           = "${resourceGroupName}${uniqueRgString}storage"
+        storageAccount    = "${resourceGroupName}${uniqueRgString}storage"
+        storageQueue      = "node-processor-queue"
     }
 
     return $resourceNames

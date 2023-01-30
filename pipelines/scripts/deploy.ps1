@@ -1,7 +1,16 @@
 $resourceGroupName = "shared"
 $resourceGroupLocation = "westus3"
 
-Import-Module "$PSScriptRoot/common.psm1" -Force
+echo "PScriptRoot: $PScriptRoot"
+$scriptRoot = If ('' -eq $PScriptRoot) {
+  $PSScriptRoot
+} else {
+  "."
+}
+
+echo "Script Root: $scriptRoot"
+
+Import-Module "$scriptRoot/common.psm1" -Force
 
 Write-Step "Create Resource Group"
 az group create -l $resourceGroupLocation -g $resourceGroupName --query name -o tsv
