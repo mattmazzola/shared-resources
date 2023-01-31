@@ -3,7 +3,7 @@ function Write-Step {
         [Parameter(Mandatory = $true)]
         [string]$text
     )
-    
+
     Write-Output ('=' * $text.Length)
     Write-Output $text
     Write-Output ('=' * $text.Length)
@@ -16,7 +16,7 @@ function Write-Hash {
         [Parameter(Mandatory = $true)]
         [Object]$hash
     )
-    
+
     Write-Output $text
     Write-Output ('=' * $text.Length)
     Write-Output $hash
@@ -71,7 +71,7 @@ function Get-SharedResourceDeploymentVars {
     $sharedResourceNames = Get-ResourceNames $resourceGroupName $uniqueRgString
 
     $acrJson = $(az acr credential show -n $sharedResourceNames.containerRegistry --query "{ username:username, password:passwords[0].value }" | ConvertFrom-Json)
-    
+
     $output = [ordered]@{
         containerAppsEnvResourceId = $(az containerapp env show -g $resourceGroupName -n $sharedResourceNames.containerAppsEnv --query "id" -o tsv)
         registryUrl                = $(az acr show -g $resourceGroupName -n $sharedResourceNames.containerRegistry --query "loginServer" -o tsv)
