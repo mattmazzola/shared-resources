@@ -59,7 +59,7 @@ module containerAppsEnv 'modules/containerAppsEnvironment.bicep' = {
   }
 }
 
-module sqlDatabase 'modules/sqlDatabase.bicep' = {
+module sqlServer 'modules/sqlServer.bicep' = {
   name: 'sqlDatabaseModule'
   params: {
     uniqueRgString: uniqueRgString
