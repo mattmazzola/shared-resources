@@ -73,7 +73,7 @@ module serviceBus 'modules/serviceBus.bicep' = {
   }
 }
 
-module storageAccount 'modules/storage.bicep' = {
+module storageAccount 'modules/storageAccount.bicep' = {
   name: 'storageAccountModule'
   params: {
     uniqueRgString: uniqueRgString
