@@ -27,16 +27,26 @@ $resourceGroupName = "shared"
 $resourceGroupLocation = "westus3"
 $uniqueRgString = "klgoyi"
 
-Import-Module "./pipelines/scripts/common.psm1" -Force
+echo "PScriptRoot: $PScriptRoot"
+$repoRoot = If ('' -eq $PScriptRoot) {
+  "$PSScriptRoot/../.."
+}
+else {
+  "."
+}
 
-$resourceNames = Get-ResourceNames $resourceGroupName $uniqueRgString
+echo "Repo Root: $repoRoot"
 
-$sqlServerResourceId = $(az sql server show -g $resourceGroupName -n $resourceNames.sqlServer --query "id" -o tsv)
-$sqlDatabaseResourceId = $(az sql db show -g $resourceGroupName --server $resourceNames.sqlServer -n $resourceNames.sqlDatabase --query "id" -o tsv)
-$serviceBusResourceId = $(az servicebus namespace show -g $resourceGroupName -n $resourceNames.servicebus --query "id" -o tsv)
-$storageResourceId = $(az storage account show -g $resourceGroupName -n $resourceNames.storage --query "id" -o tsv)
+Import-Module "$repoRoot/pipelines/scripts/common.psm1" -Force
 
-az group export -g $resourceGroupName --resource-ids $storageResourceId > arm-store.json
+$sharedResourceNames = Get-ResourceNames $sharedResourceGroupName $sharedRgString
+
+$sqlServerResourceId = $(az sql server show -g $sharedResourceGroupName -n $sharedResourceNames.sqlServer --query "id" -o tsv)
+$sqlDatabaseResourceId = $(az sql db show -g $sharedResourceGroupName --server $sharedResourceNames.sqlServer -n $sharedResourceNames.sqlDatabase --query "id" -o tsv)
+$serviceBusResourceId = $(az servicebus namespace show -g $sharedResourceGroupName -n $sharedResourceNames.servicebus --query "id" -o tsv)
+$storageResourceId = $(az storage account show -g $sharedResourceGroupName -n $sharedResourceNames.storage --query "id" -o tsv)
+
+az group export -g $sharedResourceGroupName --resource-ids $serviceBusResourceId > arm-store.json
 az bicep decompile -f arm-store.json
 ```
 
