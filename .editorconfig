@@ -5,5 +5,5 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 tab_width = 2
 
-[{.py,.md}]
+[{.py,.md,.ps1,.psm1}]
 tab_width = 4

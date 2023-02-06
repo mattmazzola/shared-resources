@@ -5,8 +5,7 @@ $sharedResourceGroupLocation = "westus3"
 echo "PScriptRoot: $PScriptRoot"
 $repoRoot = If ('' -eq $PScriptRoot) {
   "$PSScriptRoot/../.."
-}
-else {
+} Else {
   "."
 }
 
