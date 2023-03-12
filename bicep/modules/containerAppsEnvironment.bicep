@@ -4,7 +4,7 @@
 @maxLength(32)
 param name string = '${resourceGroup().name}-containerappsenv'
 param location string = resourceGroup().location
-param logAnalyticsWorkspaceId string
+param logAnalyticsWorkspaceResourceId string
 
 resource containerAppEnv 'Microsoft.App/managedEnvironments@2022-03-01' = {
   name: name
@@ -13,8 +13,8 @@ resource containerAppEnv 'Microsoft.App/managedEnvironments@2022-03-01' = {
     appLogsConfiguration: {
       destination: 'log-analytics'
       logAnalyticsConfiguration: {
-        customerId: reference(logAnalyticsWorkspaceId, '2020-08-01').customerId
-        sharedKey: listKeys(logAnalyticsWorkspaceId, '2020-08-01').primarySharedKey
+        customerId: reference(logAnalyticsWorkspaceResourceId, '2020-08-01').customerId
+        sharedKey: listKeys(logAnalyticsWorkspaceResourceId, '2020-08-01').primarySharedKey
       }
     }
   }

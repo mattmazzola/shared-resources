@@ -16,7 +16,25 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     accessPolicies: [
       {
         tenantId: '61f2e65a-a249-4aaa-82bb-248830f89177'
+        // Matt Mazzola
         objectId: 'ff05dde2-c18e-47fc-9ad2-ebf0c9efb3a0'
+        permissions: {
+          keys: [
+            'All'
+          ]
+          secrets: [
+            'All'
+          ]
+          certificates: [
+            'All'
+          ]
+        }
+      }
+      {
+        tenantId: '61f2e65a-a249-4aaa-82bb-248830f89177'
+        // shared-ml-workspace
+        objectId: '0b28d83d-83ac-4bd9-9a24-5003cf8e4796'
+        // applicationId: 'e61d1383-cd7b-4518-88c4-14257146ce66'
         permissions: {
           keys: [
             'All'
@@ -52,10 +70,17 @@ module logAnalytics 'modules/logAnalyticsWorkspace.bicep' = {
   name: 'logAnalytics'
 }
 
+module appInsights 'modules/appInsights.bicep' = {
+  name: 'appIngsights'
+  params: {
+    logAnalyticsWorkspaceResourceId: logAnalytics.outputs.resourceId
+  }
+}
+
 module containerAppsEnv 'modules/containerAppsEnvironment.bicep' = {
   name: 'containerAppsEnv'
   params: {
-    logAnalyticsWorkspaceId: logAnalytics.outputs.logAnalyticsId
+    logAnalyticsWorkspaceResourceId: logAnalytics.outputs.resourceId
   }
 }
 
@@ -77,5 +102,15 @@ module storageAccount 'modules/storageAccount.bicep' = {
   name: 'storageAccountModule'
   params: {
     uniqueRgString: uniqueRgString
+  }
+}
+
+module mlWorkspace 'modules/mlWorkspace.bicep' = {
+  name: 'mlWorkspaceModule'
+  params: {
+    storageAccountResourceId: storageAccount.outputs.resourceId
+    keyVaultResourceId: keyVault.id
+    appInsightsResourceId: appInsights.outputs.resourceId
+    containerRegistryResourceId: containerRegistry.outputs.resourceId
   }
 }

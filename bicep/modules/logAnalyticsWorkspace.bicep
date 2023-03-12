@@ -10,4 +10,4 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-12
   location: location
 }
 
-output logAnalyticsId string = logAnalyticsWorkspace.id
+output resourceId string = logAnalyticsWorkspace.id

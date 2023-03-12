@@ -20,6 +20,18 @@ az keyvault list-deleted --subscription $subscriptionId --resource-type vault
 az keyvault purge --subscription $subscriptionId -n $resourceNames.keyVault
 ```
 
+1. List User
+
+```powershell
+az ad user show --id ff05dde2-c18e-47fc-9ad2-ebf0c9efb3a0
+```
+
+1. List Service Principal
+
+```powershell
+az ad sp show --id 0b28d83d-83ac-4bd9-9a24-5003cf8e4796
+```
+
 1. Export template of specific resource
 
 ```powershell

@@ -1,3 +1,11 @@
+Param([switch]$RealDeploy)
+
+$inputs = @{
+  "RealDeploy"= $RealDeploy
+}
+
+Write-Hash "Inputs" $inputs
+
 $sharedResourceGroupName = "shared"
 $sharedRgString = 'klgoyi'
 $sharedResourceGroupLocation = "westus3"
@@ -21,13 +29,16 @@ az group create -l $sharedResourceGroupLocation -g $sharedResourceGroupName --qu
 Write-Step "Provision Resources"
 $bicepFile = "$repoRoot/bicep/main.bicep"
 
-az deployment group create `
-  -g $sharedResourceGroupName `
-  -f $bicepFile `
-  --what-if
-
-# az deployment group create `
-#   -g $sharedResourceGroupName `
-#   -f $bicepFile `
-#   --query "properties.provisioningState" `
-#   -o tsv
+if ($RealDeploy -eq $True) {
+  # az deployment group create `
+  #   -g $sharedResourceGroupName `
+  #   -f $bicepFile `
+  #   --query "properties.provisioningState" `
+  #   -o tsv
+}
+else {
+  az deployment group create `
+    -g $sharedResourceGroupName `
+    -f $bicepFile `
+    --what-if
+}

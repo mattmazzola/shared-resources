@@ -16,3 +16,5 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2022-02-01-pr
     adminUserEnabled: true
   }
 }
+
+output resourceId string = containerRegistry.id
