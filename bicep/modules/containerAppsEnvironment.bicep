@@ -5,11 +5,13 @@
 param name string = '${resourceGroup().name}-containerappsenv'
 param location string = resourceGroup().location
 param logAnalyticsWorkspaceResourceId string
+param appInsightsResourceId string
 
 resource containerAppEnv 'Microsoft.App/managedEnvironments@2022-03-01' = {
   name: name
   location: location
   properties: {
+    daprAIInstrumentationKey: reference(appInsightsResourceId, '2020-02-02').InstrumentationKey
     appLogsConfiguration: {
       destination: 'log-analytics'
       logAnalyticsConfiguration: {

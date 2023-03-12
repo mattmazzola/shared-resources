@@ -26,15 +26,15 @@ $sharedResourceNames = Get-ResourceNames $sharedResourceGroupName $sharedRgStrin
 Write-Step "Create Resource Group"
 az group create -l $sharedResourceGroupLocation -g $sharedResourceGroupName --query name -o tsv
 
-Write-Step "Provision Resources"
+Write-Step "Provision $sharedResourceGroupName Resources"
 $bicepFile = "$repoRoot/bicep/main.bicep"
 
 if ($RealDeploy -eq $True) {
-  # az deployment group create `
-  #   -g $sharedResourceGroupName `
-  #   -f $bicepFile `
-  #   --query "properties.provisioningState" `
-  #   -o tsv
+  az deployment group create `
+    -g $sharedResourceGroupName `
+    -f $bicepFile `
+    --query "properties.provisioningState" `
+    -o tsv
 }
 else {
   az deployment group create `

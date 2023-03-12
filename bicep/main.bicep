@@ -80,6 +80,7 @@ module appInsights 'modules/appInsights.bicep' = {
 module containerAppsEnv 'modules/containerAppsEnvironment.bicep' = {
   name: 'containerAppsEnv'
   params: {
+    appInsightsResourceId: appInsights.outputs.resourceId
     logAnalyticsWorkspaceResourceId: logAnalytics.outputs.resourceId
   }
 }
