@@ -32,18 +32,18 @@ function Get-ResourceNames {
   )
 
   $resourceNames = [ordered]@{
-    containerAppsEnv    = "${resourceGroupName}-containerappsenv"
-    containerRegistry   = "${resourceGroupName}${uniqueRgString}acr"
-    cosmosDatabase      = "${resourceGroupName}-${uniqueRgString}-cosmos"
-    dataFactory         = "${resourceGroupName}-${uniqueRgString}-datafactory"
-    keyVault            = "${resourceGroupName}-${uniqueRgString}-keyvault"
-    logAnalytics        = "${resourceGroupName}-loganalytics"
-    applicationInsights = "${resourceGroupName}-appinsights"
-    machineLearning     = "${resourceGroupName}-ml"
-    sqlDatabase         = "${resourceGroupName}-${uniqueRgString}-sql-db"
-    sqlServer           = "${resourceGroupName}-${uniqueRgString}-sql-server"
-    serviceBus          = "${resourceGroupName}-${uniqueRgString}-servicebus"
-    storageAccount      = "${resourceGroupName}${uniqueRgString}storage"
+    containerAppsEnv         = "${resourceGroupName}-containerappsenv"
+    containerRegistry        = "${resourceGroupName}${uniqueRgString}acr"
+    cosmosDatabase           = "${resourceGroupName}-${uniqueRgString}-cosmos"
+    dataFactory              = "${resourceGroupName}-${uniqueRgString}-datafactory"
+    keyVault                 = "${resourceGroupName}-${uniqueRgString}-keyvault"
+    logAnalytics             = "${resourceGroupName}-loganalytics"
+    applicationInsights      = "${resourceGroupName}-appinsights"
+    machineLearningWorkspace = "${resourceGroupName}-ml-workspace"
+    sqlDatabase              = "${resourceGroupName}-${uniqueRgString}-sql-db"
+    sqlServer                = "${resourceGroupName}-${uniqueRgString}-sql-server"
+    serviceBus               = "${resourceGroupName}-${uniqueRgString}-servicebus"
+    storageAccount           = "${resourceGroupName}${uniqueRgString}storage"
   }
 
   return $resourceNames
