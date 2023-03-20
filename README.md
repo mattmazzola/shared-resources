@@ -35,15 +35,14 @@ az ad sp show --id 0b28d83d-83ac-4bd9-9a24-5003cf8e4796
 1. Export template of specific resource
 
 ```powershell
-$resourceGroupName = "shared"
+$sharedResourceGroupName = "shared"
 $resourceGroupLocation = "westus3"
-$uniqueRgString = "klgoyi"
+$sharedRgString = "klgoyi"
 
 echo "PScriptRoot: $PScriptRoot"
 $repoRoot = If ('' -eq $PScriptRoot) {
   "$PSScriptRoot/../.."
-}
-else {
+} Else {
   "."
 }
 
@@ -57,8 +56,9 @@ $sqlServerResourceId = $(az sql server show -g $sharedResourceGroupName -n $shar
 $sqlDatabaseResourceId = $(az sql db show -g $sharedResourceGroupName --server $sharedResourceNames.sqlServer -n $sharedResourceNames.sqlDatabase --query "id" -o tsv)
 $serviceBusResourceId = $(az servicebus namespace show -g $sharedResourceGroupName -n $sharedResourceNames.servicebus --query "id" -o tsv)
 $storageResourceId = $(az storage account show -g $sharedResourceGroupName -n $sharedResourceNames.storage --query "id" -o tsv)
+$mlWorkspaceResourceId = $(az ml workspace show -g $sharedResourceGroupName -n $sharedResourceNames.machineLearningWorkspace --query "id" -o tsv)
 
-az group export -g $sharedResourceGroupName --resource-ids $serviceBusResourceId > arm-store.json
+az group export -g $sharedResourceGroupName --resource-ids $mlWorkspaceResourceId > arm-ml-store.json
 az bicep decompile -f arm-store.json
 ```
 
