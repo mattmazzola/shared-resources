@@ -2,6 +2,8 @@ param name string = '${resourceGroup().name}-appinsights'
 param location string = resourceGroup().location
 param logAnalyticsWorkspaceResourceId string
 
+// components	resource group	1-260
+// https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-name-rules#microsoftinsights
 resource appInsightsResource 'microsoft.insights/components@2020-02-02' = {
   name: name
   location: location
