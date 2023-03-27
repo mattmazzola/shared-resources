@@ -1,4 +1,4 @@
-Param([switch]$RealDeploy)
+Param([switch]$WhatIf = $True)
 
 echo "PScriptRoot: $PScriptRoot"
 $repoRoot = If ('' -eq $PScriptRoot) {
@@ -12,7 +12,7 @@ echo "Repo Root: $repoRoot"
 Import-Module "$repoRoot/pipelines/scripts/common.psm1" -Force
 
 $inputs = @{
-  "RealDeploy"= $RealDeploy
+  "WhatIf"= $WhatIf
 }
 
 Write-Hash "Inputs" $inputs
@@ -26,19 +26,19 @@ $sharedResourceNames = Get-ResourceNames $sharedResourceGroupName $sharedRgStrin
 Write-Step "Create Resource Group"
 az group create -l $sharedResourceGroupLocation -g $sharedResourceGroupName --query name -o tsv
 
-Write-Step "Provision $sharedResourceGroupName Resources (What-If: $(-not $RealDeploy))"
+Write-Step "Provision $sharedResourceGroupName Resources (What-If: $($WhatIf))"
 $bicepFile = "$repoRoot/bicep/main.bicep"
 
-if ($RealDeploy -eq $True) {
+if ($WhatIf -eq $True) {
   az deployment group create `
-    -g $sharedResourceGroupName `
-    -f $bicepFile `
-    --query "properties.provisioningState" `
-    -o tsv
+  -g $sharedResourceGroupName `
+  -f $bicepFile `
+  --what-if
 }
 else {
   az deployment group create `
     -g $sharedResourceGroupName `
     -f $bicepFile `
-    --what-if
+    --query "properties.provisioningState" `
+    -o tsv
 }

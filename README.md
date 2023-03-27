@@ -52,14 +52,15 @@ Import-Module "$repoRoot/pipelines/scripts/common.psm1" -Force
 
 $sharedResourceNames = Get-ResourceNames $sharedResourceGroupName $sharedRgString
 
+$redisId = $(az redis show -g $sharedResourceGroupName -n $sharedResourceNames.redis --query "id" -o tsv)
 $sqlServerResourceId = $(az sql server show -g $sharedResourceGroupName -n $sharedResourceNames.sqlServer --query "id" -o tsv)
 $sqlDatabaseResourceId = $(az sql db show -g $sharedResourceGroupName --server $sharedResourceNames.sqlServer -n $sharedResourceNames.sqlDatabase --query "id" -o tsv)
 $serviceBusResourceId = $(az servicebus namespace show -g $sharedResourceGroupName -n $sharedResourceNames.servicebus --query "id" -o tsv)
 $storageResourceId = $(az storage account show -g $sharedResourceGroupName -n $sharedResourceNames.storage --query "id" -o tsv)
 $mlWorkspaceResourceId = $(az ml workspace show -g $sharedResourceGroupName -n $sharedResourceNames.machineLearningWorkspace --query "id" -o tsv)
 
-az group export -g $sharedResourceGroupName --resource-ids $mlWorkspaceResourceId > arm-ml-store.json
-az bicep decompile -f arm-store.json
+az group export -g $sharedResourceGroupName --resource-ids $redisId > arm-redis.json
+az bicep decompile -f arm-redis.json
 ```
 
 1. Get list of available SQL SKUs for a Region

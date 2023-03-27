@@ -40,6 +40,7 @@ function Get-ResourceNames {
     logAnalytics             = "${resourceGroupName}-loganalytics"
     applicationInsights      = "${resourceGroupName}-appinsights"
     machineLearningWorkspace = "${resourceGroupName}-ml-workspace"
+    redis                    = "${resourceGroupName}-${uniqueRgString}-redis"
     sqlDatabase              = "${resourceGroupName}-${uniqueRgString}-sql-db"
     sqlServer                = "${resourceGroupName}-${uniqueRgString}-sql-server"
     serviceBus               = "${resourceGroupName}-${uniqueRgString}-servicebus"
