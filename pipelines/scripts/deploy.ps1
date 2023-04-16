@@ -23,7 +23,7 @@ $sharedResourceGroupLocation = "westus3"
 
 $sharedResourceNames = Get-ResourceNames $sharedResourceGroupName $sharedRgString
 
-Write-Step "Create Resource Group"
+Write-Step "Create Resource Group: $sharedResourceGroupName"
 az group create -l $sharedResourceGroupLocation -g $sharedResourceGroupName --query name -o tsv
 
 Write-Step "Provision $sharedResourceGroupName Resources (What-If: $($WhatIf))"
@@ -31,9 +31,9 @@ $bicepFile = "$repoRoot/bicep/main.bicep"
 
 if ($WhatIf -eq $True) {
   az deployment group create `
-  -g $sharedResourceGroupName `
-  -f $bicepFile `
-  --what-if
+    -g $sharedResourceGroupName `
+    -f $bicepFile `
+    --what-if
 }
 else {
   az deployment group create `
