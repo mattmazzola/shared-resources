@@ -68,3 +68,15 @@ az bicep decompile -f arm-redis.json
 ```powershell
 az sql db list-editions -l westus3 -o table
 ```
+
+1. Get list of database.bicep files in repos
+
+```powershell
+gci -r -e node_modules "*database.bicep"
+```
+
+1. Get list of databases resources in Azure
+
+```powershell
+az sql db list -g $sharedResourceGroupName --server $sharedResourceNames.sqlServer --query "[].{ name:name, maxSizeBytes:maxSizeBytes }" -o table
+```
