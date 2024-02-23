@@ -23,6 +23,16 @@ function Write-Hash {
   Write-Output ""
 }
 
+function Write-Secret {
+  param (
+    [Parameter(Mandatory = $true)]
+    [string]$secret,
+    [int]$characters = 5
+  )
+
+  Write-Output "$($secret.Substring(0, $characters))...$($secret.Substring($secret.Length - $characters))"
+}
+
 function Get-ResourceNames {
   param (
     [Parameter(Mandatory = $true, Position = 0)]
