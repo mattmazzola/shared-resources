@@ -18,10 +18,7 @@ $inputs = @{
 Write-Hash "Inputs" $inputs
 
 $sharedResourceGroupName = "shared"
-$sharedRgString = 'klgoyi'
 $sharedResourceGroupLocation = "westus3"
-
-$sharedResourceNames = Get-ResourceNames $sharedResourceGroupName $sharedRgString
 
 Write-Step "Create Resource Group: $sharedResourceGroupName"
 az group create -l $sharedResourceGroupLocation -g $sharedResourceGroupName --query name -o tsv
