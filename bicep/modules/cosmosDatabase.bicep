@@ -7,7 +7,7 @@ param name string = '${resourceGroup().name}-${uniqueRgString}-cosmos'
 param location string = 'West US'
 param keyVaultName string
 
-resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2022-08-15' = {
+resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2025-05-01-preview' = {
   name: name
   location: location
   properties: {

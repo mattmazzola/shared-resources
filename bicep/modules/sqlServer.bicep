@@ -7,7 +7,9 @@ param uniqueRgString string
 param serverName string = '${resourceGroup().name}-${uniqueRgString}-sql-server'
 param location string = resourceGroup().location
 
-resource sqlServer 'Microsoft.Sql/servers@2022-05-01-preview' = {
+param tenantId string
+
+resource sqlServer 'Microsoft.Sql/servers@2024-11-01-preview' = {
   location: location
   name: serverName
   properties: {

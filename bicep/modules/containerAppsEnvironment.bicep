@@ -7,7 +7,7 @@ param location string = resourceGroup().location
 param logAnalyticsWorkspaceResourceId string
 param appInsightsResourceId string
 
-resource containerAppEnv 'Microsoft.App/managedEnvironments@2022-03-01' = {
+resource containerAppEnv 'Microsoft.App/managedEnvironments@2025-02-02-preview' = {
   name: name
   location: location
   properties: {

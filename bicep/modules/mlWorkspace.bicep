@@ -10,7 +10,7 @@ param clusterName string = '${resourceGroup().name}-ml-cluster-ds11v2-01'
 
 // workspaces	resource group	3-33	Alphanumerics and hyphens.
 // https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-name-rules#microsoftmachinelearningservices
-resource mlWorkspaceResource 'Microsoft.MachineLearningServices/workspaces@2022-12-01-preview' = {
+resource mlWorkspaceResource 'Microsoft.MachineLearningServices/workspaces@2025-09-01' = {
   name: name
   location: location
   sku: {

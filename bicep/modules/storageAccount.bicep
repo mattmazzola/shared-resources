@@ -6,7 +6,7 @@ param uniqueRgString string
 param name string = '${resourceGroup().name}${uniqueRgString}storage'
 param location string = resourceGroup().location
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2025-01-01' = {
   kind: 'StorageV2'
   name: name
   location: location

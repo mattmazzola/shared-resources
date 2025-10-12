@@ -5,7 +5,7 @@
 param name string = '${resourceGroup().name}-loganalytics'
 param location string = resourceGroup().location
 
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-12-01-preview' = {
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2025-02-01' = {
   name: name
   location: location
 }

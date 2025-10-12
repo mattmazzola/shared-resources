@@ -6,7 +6,7 @@ param uniqueRgString string
 param name string = '${resourceGroup().name}${uniqueRgString}acr'
 param location string = resourceGroup().location
 
-resource containerRegistry 'Microsoft.ContainerRegistry/registries@2022-02-01-preview' = {
+resource containerRegistry 'Microsoft.ContainerRegistry/registries@2025-05-01-preview' = {
   name: name
   location: location
   sku: {

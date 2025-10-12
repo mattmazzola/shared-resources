@@ -6,7 +6,7 @@ param uniqueRgString string
 param name string = '${resourceGroup().name}-${uniqueRgString}-servicebus'
 param location string = resourceGroup().location
 
-resource containerRegistry 'Microsoft.ServiceBus/namespaces@2022-01-01-preview' = {
+resource containerRegistry 'Microsoft.ServiceBus/namespaces@2025-05-01-preview' = {
   name: name
   location: location
   sku: {
