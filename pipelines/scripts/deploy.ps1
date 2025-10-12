@@ -30,12 +30,14 @@ if ($WhatIf -eq $True) {
   az deployment group create `
     -g $sharedResourceGroupName `
     -f $bicepFile `
+    --parameters sqlServerAdminPassword=$env:SQL_SERVER_ADMIN_PASSWORD `
     --what-if
 }
 else {
   az deployment group create `
     -g $sharedResourceGroupName `
     -f $bicepFile `
+    --parameters sqlServerAdminPassword=$env:SQL_SERVER_ADMIN_PASSWORD `
     --query "properties.provisioningState" `
     -o tsv
 }

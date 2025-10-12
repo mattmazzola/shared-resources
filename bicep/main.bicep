@@ -1,5 +1,8 @@
 param location string = 'westus3'
 
+@secure()
+param sqlServerAdminPassword string
+
 var uniqueRgString = take(uniqueString(subscription().id, resourceGroup().id), 6)
 
 var keyVaultName = '${resourceGroup().name}-${uniqueRgString}-keyvault'
@@ -94,7 +97,7 @@ module sqlServer 'modules/sqlServer.bicep' = {
   params: {
     uniqueRgString: uniqueRgString
     tenantId: tenantId
-    administratorPassword: 'Admin#${uniqueRgString}'
+    administratorPassword: sqlServerAdminPassword
   }
 }
 
