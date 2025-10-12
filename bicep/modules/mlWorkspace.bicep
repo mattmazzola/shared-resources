@@ -5,8 +5,9 @@ param keyVaultResourceId string
 param appInsightsResourceId string
 param containerRegistryResourceId string
 
-param computeName string = '${resourceGroup().name}-ml-vm-01-ds12v2'
-param clusterName string = '${resourceGroup().name}-ml-cluster-ds11v2-01'
+param uniqueRgString string
+param computeName string = '${resourceGroup().name}-${uniqueRgString}-ml-vm'
+param clusterName string = '${resourceGroup().name}-${uniqueRgString}-ml-clust'
 
 // workspaces	resource group	3-33	Alphanumerics and hyphens.
 // https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-name-rules#microsoftmachinelearningservices
