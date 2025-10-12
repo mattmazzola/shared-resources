@@ -2,8 +2,29 @@
 
 Provision resources that will be shared between projects on subscription
 
+## Acquire Permissions
+
+```pwsh
+az login
+```
+
+## Deploying
+
+```pwsh
+./pipelines/scripts/deploy.ps1
+```
+
+```pwsh
+./pipelines/scripts/deploy.ps1 -WhatIf:$False
+```
+
+## Estimate Costs of Base Resources
+
+$40 per month
+
 ## Resource Naming Constraints
 
+- <https://azure.microsoft.com/en-us/pricing>
 - <https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-name-rules>
 
 ## Helpful Commands
@@ -37,7 +58,7 @@ az ad sp show --id 0b28d83d-83ac-4bd9-9a24-5003cf8e4796
 ```powershell
 $sharedResourceGroupName = "shared"
 $resourceGroupLocation = "westus3"
-$sharedRgString = "klgoyi"
+$sharedRgString = "zkpwxz"
 
 echo "PScriptRoot: $PScriptRoot"
 $repoRoot = If ('' -eq $PScriptRoot) {
