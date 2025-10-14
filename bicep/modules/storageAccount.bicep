@@ -13,6 +13,9 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2025-01-01' = {
   sku: {
     name: 'Standard_LRS'
   }
+  properties: {
+    allowBlobPublicAccess: true
+  }
 }
 
 output resourceId string = storageAccount.id
