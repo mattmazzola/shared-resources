@@ -1,4 +1,4 @@
 *.env*.local
 
+# Ignore exported ARM template .json files
 arm-*
-*.json
