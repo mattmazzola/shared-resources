@@ -71,6 +71,11 @@ function Get-EnvVarFromFile {
   $variableMatch = $(Get-Content $envFilePath | Select-String -Pattern "$variableName=(.+)")
   $value = $variableMatch.Matches[0].Groups[1].Value
 
+  # Strip surrounding quotes if present
+  if ($value -match '^["''](.*)["'']$') {
+    $value = $matches[1]
+  }
+
   return $value
 }
 
