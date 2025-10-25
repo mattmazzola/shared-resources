@@ -62,6 +62,7 @@ resource notebookCompute 'Microsoft.MachineLearningServices/workspaces/computes@
     disableLocalAuth: true
     computeType: 'ComputeInstance'
     properties: {
+      // TODO: How to set auto shutdown after 30 min of idle?
       vmSize: 'STANDARD_DS12_V2'
     }
   }
