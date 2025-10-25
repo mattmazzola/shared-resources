@@ -68,7 +68,10 @@ function Get-EnvVarFromFile {
     [string]$variableName
   )
 
-  $variableMatch = $(Get-Content $envFilePath | Select-String -Pattern "$variableName=(.+)")
+  $variableMatch = $(Get-Content $envFilePath | Where-Object { $_ -notmatch '^#' } | Select-String -Pattern "$variableName=(.+)")
+  if (-not $variableMatch) {
+    throw "Variable '$variableName' not found in $envFilePath"
+  }
   $value = $variableMatch.Matches[0].Groups[1].Value
 
   # Strip surrounding quotes if present
@@ -99,4 +102,34 @@ function Get-SharedResourceDeploymentVars {
   }
 
   return $output
+}
+
+function Get-RepoRoot {
+  $callStack = Get-PSCallStack
+  # Find the first script in the call stack (excluding this module)
+  $callingScript = $callStack | Where-Object { $_.ScriptName -and $_.ScriptName -like "*.ps1" -and $_.ScriptName -notlike "*common.psm1" } | Select-Object -First 1
+  if (-not $callingScript) {
+    throw "Could not determine calling script path."
+  }
+  $scriptPath = $callingScript.ScriptName
+  $scriptDir = Split-Path $scriptPath
+
+  # Find repo root by searching upward for README.md
+  $currentDir = $scriptDir
+  $repoRoot = $null
+  while ($currentDir -and -not $repoRoot) {
+    if (Test-Path (Join-Path $currentDir "README.md")) {
+      $repoRoot = $currentDir
+    } else {
+      $currentDir = Split-Path $currentDir
+    }
+  }
+  if (-not $repoRoot) {
+    throw "Could not find repo root (no README.md found in parent directories)."
+  }
+  return @{
+    ScriptPath = $scriptPath
+    ScriptDir = $scriptDir
+    RepoRoot = $repoRoot
+  }
 }
