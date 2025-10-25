@@ -33,7 +33,7 @@ resource mlWorkspaceResource 'Microsoft.MachineLearningServices/workspaces@2025-
 }
 
 // https://learn.microsoft.com/en-us/azure/templates/microsoft.machinelearningservices/workspaces/computes?pivots=deployment-language-bicep#compute-objects
-resource cluster 'Microsoft.MachineLearningServices/workspaces/computes@2022-12-01-preview' = {
+resource cluster 'Microsoft.MachineLearningServices/workspaces/computes@2025-09-01' = {
   parent: mlWorkspaceResource
   location: location
   name: clusterName
@@ -53,7 +53,7 @@ resource cluster 'Microsoft.MachineLearningServices/workspaces/computes@2022-12-
   }
 }
 
-resource notebookCompute 'Microsoft.MachineLearningServices/workspaces/computes@2022-12-01-preview' = {
+resource notebookCompute 'Microsoft.MachineLearningServices/workspaces/computes@2025-09-01' = {
   parent: mlWorkspaceResource
   location: location
   name: computeName

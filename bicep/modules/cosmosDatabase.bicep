@@ -22,7 +22,7 @@ resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2025-05-01-previ
 
 var databaseKeySecretName = '${resourceGroup().name}-db-key'
 
-resource databaseKey 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
+resource databaseKey 'Microsoft.KeyVault/vaults/secrets@2025-05-01' = {
   name: '${keyVaultName}/${databaseKeySecretName}'
   properties: {
     value: databaseAccount.listKeys().primaryMasterKey
