@@ -6,6 +6,7 @@ Provision resources that will be shared between projects on subscription
 
 ```pwsh
 az login
+az account set -n "Matt Mazzola - Personal Projects Recovered"
 ```
 
 ## Deploying
@@ -58,7 +59,7 @@ az ad sp show --id 0b28d83d-83ac-4bd9-9a24-5003cf8e4796
 ```powershell
 $sharedResourceGroupName = "shared"
 $resourceGroupLocation = "westus3"
-$sharedRgString = "zkpwxz"
+$sharedRgString = "klgoyi"
 
 echo "PScriptRoot: $PScriptRoot"
 $repoRoot = If ('' -eq $PScriptRoot) {
