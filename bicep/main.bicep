@@ -3,7 +3,7 @@ param location string = 'westus3'
 @secure()
 param sqlServerAdminPassword string
 
-var uniqueRgString = take(uniqueString(subscription().id, resourceGroup().id), 6)
+var uniqueRgString = take(uniqueString(resourceGroup().id), 6)
 
 var keyVaultName = '${resourceGroup().name}-${uniqueRgString}-keyvault'
 
