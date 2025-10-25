@@ -58,7 +58,7 @@ az ad sp show --id 0b28d83d-83ac-4bd9-9a24-5003cf8e4796
 ```powershell
 $sharedResourceGroupName = "shared"
 $resourceGroupLocation = "westus3"
-$sharedRgString = "zkpwxz"
+$sharedRgString = "klgoyi"
 
 echo "PScriptRoot: $PScriptRoot"
 $repoRoot = If ('' -eq $PScriptRoot) {
