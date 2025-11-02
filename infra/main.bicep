@@ -67,25 +67,25 @@ module cosmosDatabase 'modules/cosmosDatabase.bicep' = {
 }
 
 module containerRegistry 'modules/containerRegistry.bicep' = {
-  name: 'containerRegistry'
+  name: 'containerRegistryModule'
   params: {
     uniqueRgString: uniqueRgString
   }
 }
 
 module logAnalytics 'modules/logAnalyticsWorkspace.bicep' = {
-  name: 'logAnalytics'
+  name: 'logAnalyticsModule'
 }
 
 module appInsights 'modules/appInsights.bicep' = {
-  name: 'appIngsights'
+  name: 'appIngsightsModule'
   params: {
     logAnalyticsWorkspaceResourceId: logAnalytics.outputs.resourceId
   }
 }
 
 module containerAppsEnv 'modules/containerAppsEnvironment.bicep' = {
-  name: 'containerAppsEnv'
+  name: 'containerAppsEnvModule'
   params: {
     appInsightsResourceId: appInsights.outputs.resourceId
     logAnalyticsWorkspaceResourceId: logAnalytics.outputs.resourceId
