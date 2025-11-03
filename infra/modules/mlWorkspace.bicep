@@ -6,6 +6,10 @@ param appInsightsResourceId string
 param containerRegistryResourceId string
 
 param uniqueRgString string
+
+param createTrainingCluster bool = false
+param createNotebookCompute bool = false
+
 param computeName string = '${resourceGroup().name}-${uniqueRgString}-ml-vm'
 param clusterName string = '${resourceGroup().name}-${uniqueRgString}-ml-clust'
 
@@ -33,7 +37,7 @@ resource mlWorkspaceResource 'Microsoft.MachineLearningServices/workspaces@2025-
 }
 
 // https://learn.microsoft.com/en-us/azure/templates/microsoft.machinelearningservices/workspaces/computes?pivots=deployment-language-bicep#compute-objects
-resource cluster 'Microsoft.MachineLearningServices/workspaces/computes@2025-09-01' = {
+resource cluster 'Microsoft.MachineLearningServices/workspaces/computes@2025-09-01' = if (createTrainingCluster) {
   parent: mlWorkspaceResource
   location: location
   name: clusterName
@@ -47,13 +51,13 @@ resource cluster 'Microsoft.MachineLearningServices/workspaces/computes@2025-09-
         minNodeCount: 0
         nodeIdleTimeBeforeScaleDown: 'PT2M'
       }
-      vmSize: 'STANDARD_DS11_V2'
+      vmSize: 'STANDARD_DS1_V2'
       remoteLoginPortPublicAccess: 'Disabled'
     }
   }
 }
 
-resource notebookCompute 'Microsoft.MachineLearningServices/workspaces/computes@2025-09-01' = {
+resource notebookCompute 'Microsoft.MachineLearningServices/workspaces/computes@2025-09-01' = if (createNotebookCompute) {
   parent: mlWorkspaceResource
   location: location
   name: computeName
@@ -63,7 +67,8 @@ resource notebookCompute 'Microsoft.MachineLearningServices/workspaces/computes@
     computeType: 'ComputeInstance'
     properties: {
       // TODO: How to set auto shutdown after 30 min of idle?
-      vmSize: 'STANDARD_DS12_V2'
+      // Note: Idle shutdown must be configured post-deployment via Azure ML Studio or CLI
+      vmSize: 'STANDARD_DS1_V2'
     }
   }
 }

@@ -4,18 +4,21 @@ Provision resources that will be shared between projects on subscription
 
 ## Acquire Permissions
 
-```pwsh
+```sh
 az login
+# Matt Mazzola - Personal
+az account set -n 375b0f6d-8ad5-412d-9e11-15d36d14dc63
+az acr login --name sharedklgoyiacr
 ```
 
 ## Deploying
 
-```pwsh
-./pipelines/scripts/deploy.ps1
-```
+```sh
+# Quick summary
+azd provision --preview
 
-```pwsh
-./pipelines/scripts/deploy.ps1 -WhatIf:$False
+# Detailed ARM what-if
+./scripts/what-if.sh
 ```
 
 ## Estimate Costs of Base Resources
@@ -31,31 +34,41 @@ $40 per month
 
 1. List Soft-Deleted KeyVaults
 
-```powershell
+```pwsh
 az keyvault list-deleted --subscription $subscriptionId --resource-type vault
 ```
 
 1. Purge Soft-Deleted Key Vault
 
-```powershell
+```pwsh
 az keyvault purge --subscription $subscriptionId -n $resourceNames.keyVault
 ```
 
 1. List User
 
-```powershell
+```pwsh
+az ad user show --id ff05dde2-c18e-47fc-9ad2-ebf0c9efb3a0
+```
+
+```pwsh
+az keyvault purge --subscription $subscriptionId -n $resourceNames.keyVault
+```
+
+1. List User
+
+```pwsh
 az ad user show --id ff05dde2-c18e-47fc-9ad2-ebf0c9efb3a0
 ```
 
 1. List Service Principal
 
-```powershell
+```pwsh
 az ad sp show --id 0b28d83d-83ac-4bd9-9a24-5003cf8e4796
 ```
 
 1. Export template of specific resource
 
-```powershell
+```pwsh
 $sharedResourceGroupName = "shared"
 $resourceGroupLocation = "westus3"
 $sharedRgString = "klgoyi"
@@ -86,18 +99,18 @@ az bicep decompile -f arm-redis.json
 
 1. Get list of available SQL SKUs for a Region
 
-```powershell
+```pwsh
 az sql db list-editions -l westus3 -o table
 ```
 
 1. Get list of database.bicep files in repos
 
-```powershell
+```pwsh
 gci -r -e node_modules "*database.bicep"
 ```
 
 1. Get list of databases resources in Azure
 
-```powershell
+```pwsh
 az sql db list -g $sharedResourceGroupName --server $sharedResourceNames.sqlServer --query "[].{ name:name, maxSizeBytes:maxSizeBytes }" -o table
 ```

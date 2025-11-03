@@ -1,91 +1,79 @@
+targetScope = 'subscription'
+
+@minLength(1)
+@maxLength(64)
+@description('Name of the environment (e.g., dev, staging, prod)')
+param environmentName string
+
 param location string = 'westus3'
 
 @secure()
 param sqlServerAdminPassword string
 
-var uniqueRgString = take(uniqueString(resourceGroup().id), 6)
+var resourceToken = toLower(uniqueString(subscription().id, environmentName, location))
 
-var keyVaultName = '${resourceGroup().name}-${uniqueRgString}-keyvault'
+// Tags for shared resources - use prefixed env name to avoid conflicts with other projects
+var tags = {
+  'azd-env-name': 'shared-${environmentName}' // e.g., "shared-dev", "shared-prod"
+  project: 'shared-resources'
+}
 
-var tenantId = '61f2e65a-a249-4aaa-82bb-248830f89177'
-
+param tenantId string
+param resourceGroupName string
 var mlServicePrincipalObjectId = '0b28d83d-83ac-4bd9-9a24-5003cf8e4796'
 
-resource keyVault 'Microsoft.KeyVault/vaults@2025-05-01' = {
-  name: keyVaultName
+resource sharedRg 'Microsoft.Resources/resourceGroups@2025-04-01' = {
+  name: resourceGroupName
   location: location
-  properties: {
-    sku: {
-      family: 'A'
-      name: 'standard'
-    }
+  tags: tags
+}
+
+var uniqueRgString = take(uniqueString(sharedRg.id), 6)
+
+module keyVault 'modules/keyVault.bicep' = {
+  name: 'keyVaultModule'
+  scope: sharedRg
+  params: {
+    uniqueRgString: uniqueRgString
+    location: location
     tenantId: tenantId
-    accessPolicies: [
-      {
-        tenantId: tenantId
-        // Matt Mazzola
-        objectId: 'ff05dde2-c18e-47fc-9ad2-ebf0c9efb3a0'
-        permissions: {
-          keys: [
-            'All'
-          ]
-          secrets: [
-            'All'
-          ]
-          certificates: [
-            'All'
-          ]
-        }
-      }
-      // {
-      //   tenantId: tenantId
-      //   // shared-ml-workspace
-      //   objectId: mlServicePrincipalObjectId
-      //   // applicationId: 'e61d1383-cd7b-4518-88c4-14257146ce66'
-      //   permissions: {
-      //     keys: [
-      //       'All'
-      //     ]
-      //     secrets: [
-      //       'All'
-      //     ]
-      //     certificates: [
-      //       'All'
-      //     ]
-      //   }
-      // }
-    ]
+    tags: tags
   }
 }
 
 module cosmosDatabase 'modules/cosmosDatabase.bicep' = {
   name: 'databaseModule'
+  scope: sharedRg
   params: {
     uniqueRgString: uniqueRgString
-    keyVaultName: keyVault.name
+    keyVaultName: keyVault.outputs.name
   }
 }
 
 module containerRegistry 'modules/containerRegistry.bicep' = {
-  name: 'containerRegistry'
+  name: 'containerRegistryModule'
+  scope: sharedRg
   params: {
     uniqueRgString: uniqueRgString
   }
 }
 
 module logAnalytics 'modules/logAnalyticsWorkspace.bicep' = {
-  name: 'logAnalytics'
+  name: 'logAnalyticsModule'
+  scope: sharedRg
 }
 
 module appInsights 'modules/appInsights.bicep' = {
-  name: 'appIngsights'
+  name: 'appIngsightsModule'
+  scope: sharedRg
   params: {
     logAnalyticsWorkspaceResourceId: logAnalytics.outputs.resourceId
   }
 }
 
 module containerAppsEnv 'modules/containerAppsEnvironment.bicep' = {
-  name: 'containerAppsEnv'
+  name: 'containerAppsEnvModule'
+  scope: sharedRg
   params: {
     appInsightsResourceId: appInsights.outputs.resourceId
     logAnalyticsWorkspaceResourceId: logAnalytics.outputs.resourceId
@@ -94,6 +82,7 @@ module containerAppsEnv 'modules/containerAppsEnvironment.bicep' = {
 
 module sqlServer 'modules/sqlServer.bicep' = {
   name: 'sqlDatabaseModule'
+  scope: sharedRg
   params: {
     uniqueRgString: uniqueRgString
     tenantId: tenantId
@@ -103,6 +92,7 @@ module sqlServer 'modules/sqlServer.bicep' = {
 
 module serviceBus 'modules/serviceBus.bicep' = {
   name: 'serviceBusModule'
+  scope: sharedRg
   params: {
     uniqueRgString: uniqueRgString
   }
@@ -110,6 +100,7 @@ module serviceBus 'modules/serviceBus.bicep' = {
 
 module storageAccount 'modules/storageAccount.bicep' = {
   name: 'storageAccountModule'
+  scope: sharedRg
   params: {
     uniqueRgString: uniqueRgString
   }
@@ -117,11 +108,20 @@ module storageAccount 'modules/storageAccount.bicep' = {
 
 module mlWorkspace 'modules/mlWorkspace.bicep' = {
   name: 'mlWorkspaceModule'
+  scope: sharedRg
   params: {
     uniqueRgString: uniqueRgString
     storageAccountResourceId: storageAccount.outputs.resourceId
-    keyVaultResourceId: keyVault.id
+    keyVaultResourceId: keyVault.outputs.resourceId
     appInsightsResourceId: appInsights.outputs.resourceId
     containerRegistryResourceId: containerRegistry.outputs.resourceId
+    // Optional: Uncomment to create compute resources during deployment
+    // createTrainingCluster: true
+    // createNotebookCompute: true
   }
 }
+
+// Outputs required by azd
+output AZURE_LOCATION string = location
+output AZURE_TENANT_ID string = tenant().tenantId
+output AZURE_RESOURCE_GROUP string = sharedRg.name

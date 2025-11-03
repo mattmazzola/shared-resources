@@ -33,25 +33,20 @@ Write-Hash "Inputs" $inputs
 
 $sharedResourceGroupName = "shared"
 $sharedResourceGroupLocation = "westus3"
+$sharedRgString = 'klgoyi'
 
-Write-Step "Create Resource Group: $sharedResourceGroupName"
-az group create -l $sharedResourceGroupLocation -g $sharedResourceGroupName --query name -o tsv
+$sharedResourceNames = Get-ResourceNames $sharedResourceGroupName $sharedRgString
 
-Write-Step "Provision $sharedResourceGroupName Resources (What-If: $($WhatIf))"
-$bicepFile = "$repoRoot/infra/main.bicep"
+Write-Step "Fetch params from Azure"
+$sharedResourceVars = Get-SharedResourceDeploymentVars $sharedResourceGroupName $sharedRgString
 
-if ($WhatIf -eq $True) {
-  az deployment group create `
-    -g $sharedResourceGroupName `
-    -f $bicepFile `
-    --parameters sqlServerAdminPassword=$env:SQL_SERVER_ADMIN_PASSWORD `
-    --what-if
+$data = [ordered]@{
+  "containerAppsEnvResourceId" = $($sharedResourceVars.containerAppsEnvResourceId)
+  "registryUrl"                = $($sharedResourceVars.registryUrl)
+  "registryUsername"           = $($sharedResourceVars.registryUsername)
+  "registryPassword"           = Write-Secret $($sharedResourceVars.registryPassword)
 }
-else {
-  az deployment group create `
-    -g $sharedResourceGroupName `
-    -f $bicepFile `
-    --parameters sqlServerAdminPassword=$env:SQL_SERVER_ADMIN_PASSWORD `
-    --query "properties.provisioningState" `
-    -o tsv
-}
+
+Write-Output $sharedResourceVars.containerAppsEnvResourceId
+
+Write-Hash "Data" $data
