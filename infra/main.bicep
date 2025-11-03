@@ -11,8 +11,11 @@ param location string = 'westus3'
 param sqlServerAdminPassword string
 
 var resourceToken = toLower(uniqueString(subscription().id, environmentName, location))
+
+// Tags for shared resources - use prefixed env name to avoid conflicts with other projects
 var tags = {
-  'azd-env-name': environmentName
+  'azd-env-name': 'shared-${environmentName}' // e.g., "shared-dev", "shared-prod"
+  project: 'shared-resources'
 }
 
 param tenantId string

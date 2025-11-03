@@ -13,6 +13,9 @@
     },
     "resourceGroupName": {
       "value": "${AZURE_RESOURCE_GROUP}"
+    },
+    "sqlServerAdminPassword": {
+      "value": "${SQL_SERVER_ADMIN_PASSWORD}"
     }
   }
 }
