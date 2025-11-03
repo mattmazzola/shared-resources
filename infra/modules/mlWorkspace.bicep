@@ -47,7 +47,7 @@ resource cluster 'Microsoft.MachineLearningServices/workspaces/computes@2025-09-
         minNodeCount: 0
         nodeIdleTimeBeforeScaleDown: 'PT2M'
       }
-      vmSize: 'STANDARD_DS11_V2'
+      vmSize: 'STANDARD_DS1_V2'
       remoteLoginPortPublicAccess: 'Disabled'
     }
   }
@@ -63,7 +63,8 @@ resource notebookCompute 'Microsoft.MachineLearningServices/workspaces/computes@
     computeType: 'ComputeInstance'
     properties: {
       // TODO: How to set auto shutdown after 30 min of idle?
-      vmSize: 'STANDARD_DS12_V2'
+      // Note: Idle shutdown must be configured post-deployment via Azure ML Studio or CLI
+      vmSize: 'STANDARD_DS1_V2'
     }
   }
 }
