@@ -1,3 +1,9 @@
+# Azure Developer CLI
+.azure/*
+!.azure/.gitignore
+!.azure/config.json
+
+# Ignore Local Environment Files
 *.env*.local
 
 # Ignore exported ARM template .json files
