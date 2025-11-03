@@ -115,6 +115,9 @@ module mlWorkspace 'modules/mlWorkspace.bicep' = {
     keyVaultResourceId: keyVault.outputs.resourceId
     appInsightsResourceId: appInsights.outputs.resourceId
     containerRegistryResourceId: containerRegistry.outputs.resourceId
+    // Optional: Uncomment to create compute resources during deployment
+    // createTrainingCluster: true
+    // createNotebookCompute: true
   }
 }
 

@@ -6,6 +6,10 @@ param appInsightsResourceId string
 param containerRegistryResourceId string
 
 param uniqueRgString string
+
+param createTrainingCluster bool = false
+param createNotebookCompute bool = false
+
 param computeName string = '${resourceGroup().name}-${uniqueRgString}-ml-vm'
 param clusterName string = '${resourceGroup().name}-${uniqueRgString}-ml-clust'
 
@@ -33,7 +37,7 @@ resource mlWorkspaceResource 'Microsoft.MachineLearningServices/workspaces@2025-
 }
 
 // https://learn.microsoft.com/en-us/azure/templates/microsoft.machinelearningservices/workspaces/computes?pivots=deployment-language-bicep#compute-objects
-resource cluster 'Microsoft.MachineLearningServices/workspaces/computes@2025-09-01' = {
+resource cluster 'Microsoft.MachineLearningServices/workspaces/computes@2025-09-01' = if (createTrainingCluster) {
   parent: mlWorkspaceResource
   location: location
   name: clusterName
@@ -53,7 +57,7 @@ resource cluster 'Microsoft.MachineLearningServices/workspaces/computes@2025-09-
   }
 }
 
-resource notebookCompute 'Microsoft.MachineLearningServices/workspaces/computes@2025-09-01' = {
+resource notebookCompute 'Microsoft.MachineLearningServices/workspaces/computes@2025-09-01' = if (createNotebookCompute) {
   parent: mlWorkspaceResource
   location: location
   name: computeName
