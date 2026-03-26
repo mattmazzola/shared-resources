@@ -11,7 +11,7 @@ az account set -n 375b0f6d-8ad5-412d-9e11-15d36d14dc63
 az acr login --name sharedklgoyiacr
 ```
 
-## Deploying
+## What If Deployment
 
 ```sh
 # Quick summary
