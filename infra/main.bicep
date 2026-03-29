@@ -103,6 +103,11 @@ module storageAccount 'modules/storageAccount.bicep' = {
   scope: sharedRg
   params: {
     uniqueRgString: uniqueRgString
+    corsAllowedOrigins: [
+      'http://localhost:5173'
+      'http://localhost:3100'
+      'https://mattmazzola.github.io'
+    ]
   }
 }
 
